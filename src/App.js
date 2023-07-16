@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-function App() {
+import Main from './pages/Main';
+import About from './pages/About';
+import Contacts from './pages/Contacts';
+import Header from './components/Header';
+import { useCallback, useState } from 'react';
+
+const App = () => {
+  const [counter, setCounter] = useState(0);
+  const [contactList, setContactList] = useState([]);
+
+  const updateContactList = useCallback(
+    (list) => {
+      setContactList(list);
+    },
+    [contactList]
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path='/' element={<Main setCounter={setCounter} counter={counter} updateContactList={updateContactList}/>} />
+          <Route path='/about' element={<About product={counter} />} />
+          <Route
+            path='/contacts'
+            element={<Contacts list={contactList} />}
+          />
+        </Routes>
+      </Router>
     </div>
   );
-}
+};
 
 export default App;
